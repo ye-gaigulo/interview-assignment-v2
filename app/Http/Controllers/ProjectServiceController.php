@@ -11,33 +11,16 @@ use Curl;
 class ProjectServiceController extends Controller
 {
 
-        public function getServiceCall($uri){
-
-
-    
-    // SESSION VARIABLES        
-    $header1 = 'application/json: application/json';
-    $header2 = 'Authorization: 71456dbd15de0c0b6d2b4b44e5a92ad94c6def97';
-
-
-    return Curl::to($uri)->withHeader($header1)->withHeader($header2)->get();
-
-        
-    }
-
-    
     /**
      * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $projectList = $this->getServiceCall('http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/');
-
+        $uri = 'http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/';
+        $projectList = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->get();
         $projectList = json_decode($projectList, true);
 
-//        dd($projectList);
         return view('projects.index')->with('projectList', $projectList);
     }
 
@@ -60,6 +43,8 @@ class ProjectServiceController extends Controller
     public function store(Request $request)
     {
         $data = array(
+            // manage generating PK
+            // set boolean values
             'pk' => 7,
             'title' => $request->input('title'),
             'description' => $request->input('description'),
@@ -71,16 +56,9 @@ class ProjectServiceController extends Controller
 
 
         $uri = 'http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/';
+        $createProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->post();
 
-        // SESSION VARIABLES
-
-        $header1 = 'application/json: application/json';
-        $header2 = 'Authorization: 71456dbd15de0c0b6d2b4b44e5a92ad94c6def97';
-
-
-        $createProject = Curl::to($uri)->withHeader($header1)->withHeader($header2)->withData($data)->asJson()->post();
-
-        // return to the index page with JavaScript helper informing that the class has been written
+        // return to the index page with JavaScript helper i.e. form has been saved
         $this->index();
     }
 
@@ -103,6 +81,8 @@ class ProjectServiceController extends Controller
      */
     public function edit($id)
     {
+        
+
         dd($id);
     }
 

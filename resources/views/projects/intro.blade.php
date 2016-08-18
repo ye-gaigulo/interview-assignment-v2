@@ -6,7 +6,7 @@ Projects API - Projects Intro
 
 @section('content')
 
-
+{{ Session::get('username') }}
 
 @endsection
 

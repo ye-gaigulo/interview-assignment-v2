@@ -5,7 +5,7 @@ Projects API - Login
 @endsection
 
 @section('content')
-{!! Form::open(array('url' => route('collect.auth') )) !!}
+{!! Form::open(array('url' => route('login') )) !!}
 
 	<div class="row">
 		<div class="col-md-6 col-md-offset-2">

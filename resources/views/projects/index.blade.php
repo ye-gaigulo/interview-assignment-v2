@@ -55,7 +55,7 @@ Projects API - Projects Index
 			projectIndex.edit = document.getElementById('edit');
 
 			$(projectIndex.edit).click(function(){
-				var projectIndex.cP = $('input[name=selectedProject]:checked').val();
+				projectIndex.cP = $('input[name=selectedProject]:checked').val();
 				//conflict passing JS var to PHP blade, cannot use named route
 				//route('projects.edit', ['projects' => cProject ])}}
 				window.open("projects/"+projectIndex.cP+"/edit", "_self");
