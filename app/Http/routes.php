@@ -11,11 +11,12 @@
 |
 */
 
-Route::get('/login', function () {
+Route::get('/', function () {
     return view('auth.login');
 });
-
 Route::post('/login/admin', ['as' => 'collect.auth', 'uses' => 'UserServiceController@login']);
-
 Route::resource('projects', 'ProjectServiceController');
+Route::get('/projects/intro', ['as' => 'projects.intro', 'uses' => function(){
+	return view('projects.intro');
+}]);
 

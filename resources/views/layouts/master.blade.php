@@ -28,13 +28,9 @@
 		
 		@include('partials.footer')
 	</div>
-	
-	<!-- fix this chevron for scrolling back to the top of the screen -->
-	<div id="back-top" style="display: none;">
-	    <a href="http://localhost/1st-tender/index.html#header"><i class="fa fa-chevron-up"></i></a>
-	</div>	
-
 	<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+	@yield('scripts')
 </body>
 </html>

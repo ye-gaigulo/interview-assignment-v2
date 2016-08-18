@@ -13,23 +13,9 @@ class ProjectServiceController extends Controller
 
         public function getServiceCall($uri){
 
-//        $url ="http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/";
-        
-        
-/*
-  $ch = curl_init($url);
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");  
-  curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-  'application/json: application/json',
-  'Authorization: 71456dbd15de0c0b6d2b4b44e5a92ad94c6def97'
-));
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
-  $result = curl_exec($ch);
-  curl_close($ch);  // Seems like good practice
-  
-  dd($result);
-*/
+
+    
+    // SESSION VARIABLES        
     $header1 = 'application/json: application/json';
     $header2 = 'Authorization: 71456dbd15de0c0b6d2b4b44e5a92ad94c6def97';
 
@@ -51,7 +37,7 @@ class ProjectServiceController extends Controller
 
         $projectList = json_decode($projectList, true);
 
-        dd($projectList);
+//        dd($projectList);
         return view('projects.index')->with('projectList', $projectList);
     }
 
@@ -62,7 +48,7 @@ class ProjectServiceController extends Controller
      */
     public function create()
     {
-        //
+        return view('projects.create');
     }
 
     /**
@@ -73,7 +59,29 @@ class ProjectServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = array(
+            'pk' => 7,
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+            'is_billable' => false,
+            'is_active' => true 
+        );
+
+
+        $uri = 'http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/';
+
+        // SESSION VARIABLES
+
+        $header1 = 'application/json: application/json';
+        $header2 = 'Authorization: 71456dbd15de0c0b6d2b4b44e5a92ad94c6def97';
+
+
+        $createProject = Curl::to($uri)->withHeader($header1)->withHeader($header2)->withData($data)->asJson()->post();
+
+        // return to the index page with JavaScript helper informing that the class has been written
+        $this->index();
     }
 
     /**
@@ -95,7 +103,7 @@ class ProjectServiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        dd($id);
     }
 
     /**
