@@ -43,23 +43,21 @@ class ProjectServiceController extends Controller
     public function store(Request $request)
     {
         $data = array(
-            // manage generating PK
-            // set boolean values
-            'pk' => 7,
+            // cannot accept null values
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
-            'is_billable' => false,
-            'is_active' => true 
+            'is_billable' => ($request->input('is_billable') == 'true')?true:false ,
+            'is_active' => ($request->input('is_active') == 'true')?true:false
         );
-
 
         $uri = 'http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/';
         $createProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->post();
 
+        //dd($createProject);
         // return to the index page with JavaScript helper i.e. form has been saved
-        $this->index();
+        return view('projects.intro');
     }
 
     /**
@@ -81,9 +79,13 @@ class ProjectServiceController extends Controller
      */
     public function edit($id)
     {
+        $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
+        $editProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->get();
+        $editProject = json_decode($editProject, true);
+        $editProject['is_billable'] = ($editProject['is_billable'])?'true':'false';
+        $editProject['is_active'] = ($editProject['is_active'])?'true':'false';
         
-
-        dd($id);
+        return view('projects.edit')->with('editProject', $editProject);
     }
 
     /**
@@ -95,7 +97,23 @@ class ProjectServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = array(
+            // cannot accept null values
+            'pk' => $id,
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+            'is_billable' => ($request->input('is_billable') == 'true')?true:false ,
+            'is_active' => ($request->input('is_active') == 'true')?true:false
+        );
+
+        $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
+        $updateProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->put();
+
+        // dd($updateProject);
+        // return to the index page with JavaScript helper i.e. form has been saved
+        return view('projects.intro');
     }
 
     /**
@@ -106,6 +124,9 @@ class ProjectServiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
+        $deleteProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->delete();
+
+        return $id;
     }
 }
