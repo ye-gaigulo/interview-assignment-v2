@@ -20,7 +20,7 @@ Projects API - Login
                                 {!! Form::text('username', null, ['class' => 'form-control', 'placeholder' => 'Username']) !!}
                             </div>
                             <div class="form-group">
-                                {!! Form::text('password', null, ['class' => 'form-control', 'placeholder' => 'password']) !!}
+                                {!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Password']) !!}
                             </div>
                                 {!! Form::submit('Login', ['class' => 'btn btn-lg btn-success btn-block']) !!}
                         </fieldset>
