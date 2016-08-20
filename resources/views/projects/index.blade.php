@@ -77,14 +77,15 @@ Projects API - Projects Index
 
 			$(projectIndex.edit).click(function(){
 				projectIndex.cP = $('input[name=selectedProject]:checked').val();
-				//conflict passing JS var to PHP blade, cannot use named route
-				//route('projects.edit', ['projects' => cProject ])}}
 				window.open("projects/"+projectIndex.cP+"/edit", "_self");
 			});
 
 			$(projectIndex.delete).click(function(){
 				projectIndex.cP = $('input[name=selectedProject]:checked').val();
-				
+
+				var currentRow = $('input[name=selectedProject]:checked').parent().parent();
+
+				console.log(currentRow);
 				if (confirm('Really delete?')) {
     				var token = getTokenContent();
     				$.ajax({
@@ -92,8 +93,10 @@ Projects API - Projects Index
       					url: '/projects/' + projectIndex.cP,
       					data: '_token='+ token,
       					success: function(result) {
-      						// remove tr from the table.
-				        	alert('Project '+ result + 'has been deleted.');
+	      						// remove tr from the table.
+					        	currentRow.slideUp(300, function(){
+					        		currentRow.remove();
+					        	});
 				        }
 				    });
   				}
