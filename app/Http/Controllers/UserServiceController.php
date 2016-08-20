@@ -13,7 +13,7 @@ class UserServiceController extends Controller
 	
 	public function sendPostData($uri, $data){
 	
-		// cURL HTTP POST request with Json data object
+		// cURL HTTP POST request with JSON data object
         // returns Authorization Key         
         return Curl::to($uri)->withData($data)->asJson()->post();
     }
@@ -25,7 +25,12 @@ class UserServiceController extends Controller
 
     public function login(Request $request){
 
-    	// validate username and password: required
+    	// Validate username and password
+        $this->validate($request,[
+            'username' => 'required|alpha|min:3|in:admin',
+            'password' => 'required|in:admin'
+        ]);
+
 	   	$uri = $request->input('user_service');
     	$data = array('username' => $request->input('username'),
     				  'password' => $request->input('password') 

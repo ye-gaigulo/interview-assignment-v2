@@ -1,9 +1,8 @@
 @extends('layouts.master')
 
 @section('title')
-Projects API - Login
-@endsection
-
+	Projects API - Login
+	@endsection
 @section('content')
 	{!! Form::open(array('url' => route('login') )) !!}
 	{!! Form::hidden('user_service', 'http://userservice.staging.tangentmicroservices.com:80/api-token-auth/', ['class' => 'form-control']) !!}
@@ -26,31 +25,23 @@ Projects API - Login
                         </fieldset>
                     </div>
                 </div>
+                <p>
+                	@if(count($errors) > 0)
+                		<div class="alert alert-danger">
+                			<ul>
+	                			@foreach($errors->all() as $error)
+	                				<li>{{ $error }}</li>	
+	                			@endforeach
+                			</ul>
+                		</div>
+                	@endif
+                </p>
             </div>
         </div>
     </div>
     {!! Form::close() !!}
-<!--
-
-	<div class="row top-margin">
-		<div class="col-md-4 col-md-offset-3">
-			<div class="col-sm-12">
-				{!! Form::text('username', null, ['class' => 'form-control', 'placeholder' => 'username']) !!}
-			</div>
-			<div class="col-sm-12">
-				{!! Form::text('password', null, ['class' => 'form-control', 'placeholder' => 'password']) !!}
-			</div>
-			<div class="col-sm-3 top-margin">
-				{!! Form::submit('Login', ['class' => 'btn btn-primary']) !!}
-			</div>
-		</div>
-	</div>
-
-	
-{!! Form::close() !!} -->
 @endsection
 
 @section('footer')
-
 
 @endsection
