@@ -119,7 +119,28 @@ class ProjectServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request,[
+            'title' => 'required|min:3',
+            'description' => 'required|min:12',
+            'start_date' => 'required|date'
+        ]);
+
         $data = array(
+            'pk' => $id,
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'start_date' => $request->input('start_date'),
+            'is_billable' => ($request->input('is_billable') == 'true')?true:false ,
+            'is_active' => ($request->input('is_active') == 'true')?true:false
+        );
+
+        if($request->input('no_end_date') == null){
+            $endDate = array('end_date' => $request->input('end_date'));
+            $data = $this->array_splice_preserve_keys($data, 4, 0, $endDate);    
+        }
+
+        /* 
+            $data = array(
             // cannot accept null values
             'pk' => $id,
             'title' => $request->input('title'),
@@ -129,7 +150,8 @@ class ProjectServiceController extends Controller
             'is_billable' => ($request->input('is_billable') == 'true')?true:false ,
             'is_active' => ($request->input('is_active') == 'true')?true:false
         );
-
+            */
+//        dd($request);
         $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
         $updateProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->put();
 

@@ -29,8 +29,8 @@ Projects API - Project Create
 						<div class="form-group">
 							{!! Form::label('end_date', 'Closing Date') !!} <br>
 							{!! Form::date('end_date', \Carbon\Carbon::now()) !!}<br>
+							{!! Form::checkbox('no_end_date', 0) !!} <i>Closing date not specified</i>
 						</div>
-						{!! Form::checkbox('no_end_date', 0) !!} <i>Closing date not specified</i>
 						<div class="form-group">
 							{!! Form::label('is_billable', 'Billable') !!}
 							{!! Form::select('is_billable', array('true' => 'true', 'false' => 'false'), 'true') !!}
@@ -70,18 +70,18 @@ Projects API - Project Create
 @section('scripts')
 	<script type="text/javascript">
 		jQuery(document).ready(function($){
-			var projectCreate = [];
+			var projectForm = [];
 
-			projectCreate.noEndDate = document.getElementsByName("no_end_date");
+			projectForm.noEndDate = document.getElementsByName("no_end_date");
 			//projectCreate.endDate = document.getElementsByName("end_date");
 
-			$(projectCreate.noEndDate).click(function(){
+			$(projectForm.noEndDate).click(function(){
 				if(this.checked){
 					$("#end_date").hide();
-					this.value = 1;
+					//this.value = 1;
 				}else{
 					$("#end_date").show();
-					this.value = 0;
+					//this.value = 0;
 				}
 			});
 
