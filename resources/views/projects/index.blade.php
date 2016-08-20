@@ -90,7 +90,7 @@ Projects API - Projects Index
     				$.ajax({
       					type: 'DELETE',
       					url: '/projects/' + projectIndex.cP,
-      					data: '_token='+token,
+      					data: '_token='+ token,
       					success: function(result) {
       						// remove tr from the table.
 				        	alert('Project '+ result + 'has been deleted.');

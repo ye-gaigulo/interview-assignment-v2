@@ -11,6 +11,19 @@ use Curl;
 class ProjectServiceController extends Controller
 {
 
+    public function array_splice_preserve_keys(&$input, $offset, $length=null, $replacement=array()) {
+        if (empty($replacement)) {
+            return array_splice($input, $offset, $length);
+        }
+
+        $part_before  = array_slice($input, 0, $offset, $preserve_keys=true);
+        $part_removed = array_slice($input, $offset, $length, $preserve_keys=true);
+        $part_after   = array_slice($input, $offset+$length, null, $preserve_keys=true);
+        $input = $part_before + $replacement + $part_after;
+
+        return $input;
+    }
+
     /**
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
@@ -42,21 +55,30 @@ class ProjectServiceController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $this->validate($request,[
+            'title' => 'required|min:3',
+            'description' => 'required|min:12',
+            'start_date' => 'required|date'
+        ]);
+
         $data = array(
-            // cannot accept null values
             'title' => $request->input('title'),
             'description' => $request->input('description'),
             'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date'),
             'is_billable' => ($request->input('is_billable') == 'true')?true:false ,
             'is_active' => ($request->input('is_active') == 'true')?true:false
         );
 
+        if($request->input('no_end_date') == null){
+            $endDate = array('end_date' => $request->input('end_date'));
+            $data = $this->array_splice_preserve_keys($data, 3, 0, $endDate);    
+        }
+        
         $uri = 'http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/';
         $createProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->post();
 
-        //dd($createProject);
-        // return to the index page with JavaScript helper i.e. form has been saved
+        // send message: Project has successfully been created
         return view('projects.intro');
     }
 
