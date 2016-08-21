@@ -2,8 +2,8 @@
 
 Project Management v2.0 is an end user web interface performing queries to an API using the REST web architecture. The UI was designed to create an understandable experience for the administrator who has access to the system.
 
-Project Managment Application can: 
-    - Index all the current projects
+## Functionality 
+	- Index all the current projects
     - Create a new project
     - Edit an exisiting project
     - Delete an exisiting project
