@@ -29,7 +29,7 @@ The Project Management Application is open-sourced software licensed under the [
 
 ## Contact
 
-Jan Oris (developer)
+Ernest Gaigulo (developer)
 
-- Email: jan.oris@ixudra.be
-- Telephone: +32 496 94 20 57
+- Email: sempuritoza@gmail.com
+- Cel: +27 79 145 2797
