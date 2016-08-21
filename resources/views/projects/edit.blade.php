@@ -7,6 +7,15 @@ Projects API - Project Edit
 @section('content')
 
 	<div class="col-md-6">
+		@if(count($errors) > 0)
+			<div class="alert alert-danger">
+				<ul>
+					@foreach($errors->all() as $error)
+						<li> {{ $error }}</li>
+					@endforeach
+				</ul>
+			</div>
+		@endif
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">Edit Project</h3>
@@ -26,7 +35,6 @@ Projects API - Project Edit
 						{!! Form::label('start_date', 'Starting Date') !!} <br>
 						{!! Form::date('start_date', $editProject['start_date']) !!}
 					</div>
-					<!-- CHECKBOX TO INDICATE THAT THERE IS NO END DATE, INSERT BLANK VALUE TO FIELD, CANNOT ACCEPT NULL -->
 					<div class="form-group">
 						{!! Form::label('end_date', 'Closing Date') !!} <br>
 						@if($editProject['end_date'] == null)
@@ -67,20 +75,15 @@ Projects API - Project Edit
 			var projectForm = [];
 
 			projectForm.noEndDate = document.getElementsByName("no_end_date");
-			//projectCreate.endDate = document.getElementsByName("end_date");
-
+			
 			$(projectForm.noEndDate).click(function(){
 				if(this.checked){
 					$("#end_date").hide();
-					//this.value = 1;
 				}else{
 					$("#end_date").show();
-					//this.value = 0;
 				}
 			});
-
 		});
-
 	</script>
 @endsection
 

@@ -139,24 +139,10 @@ class ProjectServiceController extends Controller
             $data = $this->array_splice_preserve_keys($data, 4, 0, $endDate);    
         }
 
-        /* 
-            $data = array(
-            // cannot accept null values
-            'pk' => $id,
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date'),
-            'is_billable' => ($request->input('is_billable') == 'true')?true:false ,
-            'is_active' => ($request->input('is_active') == 'true')?true:false
-        );
-            */
-//        dd($request);
         $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
         $updateProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->put();
 
-        // dd($updateProject);
-        // return to the index page with JavaScript helper i.e. form has been saved
+        // send message: Project has successfully been edited
         return view('projects.intro');
     }
 
@@ -171,6 +157,7 @@ class ProjectServiceController extends Controller
         $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
         $deleteProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->delete();
 
+        // send message: Project has successfully been deleted
         return $id;
     }
 }
