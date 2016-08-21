@@ -12,6 +12,9 @@ class ProjectServiceController extends Controller
 {
 
     public function array_splice_preserve_keys(&$input, $offset, $length=null, $replacement=array()) {
+
+        // array_splice does not preserve keys so we manually insert the end date into the array
+
         if (empty($replacement)) {
             return array_splice($input, $offset, $length);
         }
@@ -30,6 +33,10 @@ class ProjectServiceController extends Controller
      */
     public function index()
     {
+        // GET method :  Collection resource (READ *)
+        // Response Body : JSON representation of collection 
+        // Response Headers : Content-Type: application/json, *
+        // Response Code : 200 OK
         $uri = 'http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/';
         $projectList = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->get();
         $projectList = json_decode($projectList, true);
@@ -56,6 +63,7 @@ class ProjectServiceController extends Controller
     public function store(Request $request)
     {
         
+        // validate the data
         $this->validate($request,[
             'title' => 'required|min:3',
             'description' => 'required|min:12',
@@ -70,11 +78,17 @@ class ProjectServiceController extends Controller
             'is_active' => ($request->input('is_active') == 'true')?true:false
         );
 
+        // check if no_end_date is null i.e. if it is unchecked -> insert end_date value into $data
         if($request->input('no_end_date') == null){
             $endDate = array('end_date' => $request->input('end_date'));
             $data = $this->array_splice_preserve_keys($data, 3, 0, $endDate);    
         }
         
+        // POST method : Must submit all fields required by server, cannot send partial data set
+        // Response Body : JSON representation of create
+        // Response Headers : Content-Type: application/json, *
+        // Response Code : 201 CREATED (must return 201 CREATED, not 200 OK)
+        // Location : http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/{$id}/
         $uri = 'http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/';
         $createProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->post();
 
@@ -102,6 +116,11 @@ class ProjectServiceController extends Controller
      */
     public function edit($id)
     {
+        
+        // GET method :  Instance resource, id required (READ specific id)
+        // Response Body : JSON representation of instance
+        // Response Headers : Content-Type: application/json, *
+        // Response Code : 200 OK
         $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
         $editProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->get();
         $editProject = json_decode($editProject, true);
@@ -120,6 +139,7 @@ class ProjectServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //validate the data
         $this->validate($request,[
             'title' => 'required|min:3',
             'description' => 'required|min:12',
@@ -135,11 +155,17 @@ class ProjectServiceController extends Controller
             'is_active' => ($request->input('is_active') == 'true')?true:false
         );
 
+        // check if no_end_date is null i.e. if it is unchecked -> insert end_date value into $data
         if($request->input('no_end_date') == null){
             $endDate = array('end_date' => $request->input('end_date'));
             $data = $this->array_splice_preserve_keys($data, 4, 0, $endDate);    
         }
 
+        // PUT method :  Must submit all fields required by server, cannot send partial data set
+        // Response Body : JSON representation of update
+        // Response Headers : Content-Type: application/json, *
+        // Response Code : 200 OK
+        // Location : http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/{$id}/ 
         $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
         $updateProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->put();
 
@@ -156,10 +182,13 @@ class ProjectServiceController extends Controller
      */
     public function destroy($id)
     {
+        // DELETE method : object id required
+        // Response Body : none
+        // Response Headers : Content-Length: 0, *
+        // Response Code : 204 no content
         $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
         $deleteProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->delete();
 
-        // send message: Project has successfully been deleted
         return $id;
     }
 }

@@ -36,8 +36,10 @@ class UserServiceController extends Controller
     				  'password' => $request->input('password') 
     			);
     
-    	$authToken = $this->sendPostData($uri, $data);
+    	// collect the authorization token
+        $authToken = $this->sendPostData($uri, $data);
 
+        // set the session variables
         if(isset($authToken->token) && strlen($authToken->token) == 40){
             $request->session()->put('exists', true);    
             $request->session()->put('username', $request->input('username'));
