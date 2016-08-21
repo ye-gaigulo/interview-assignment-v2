@@ -78,8 +78,9 @@ class ProjectServiceController extends Controller
         $uri = 'http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/';
         $createProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->post();
 
-        // send message: Project has successfully been created
-        return view('projects.intro');
+        $log = array(
+            'message' => 'Successfully created the project');
+        return view('projects.intro')->with('log', $log);
     }
 
     /**
@@ -142,8 +143,9 @@ class ProjectServiceController extends Controller
         $uri = "http://projectservice.staging.tangentmicroservices.com:80/api/v1/projects/$id/";
         $updateProject = Curl::to($uri)->withHeader(session('header_1'))->withHeader(session('header_2'))->withData($data)->asJson()->put();
 
-        // send message: Project has successfully been edited
-        return view('projects.intro');
+        $log = array(
+            'message' => 'Successfully updated the project');
+        return view('projects.intro')->with('log', $log);
     }
 
     /**

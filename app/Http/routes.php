@@ -9,7 +9,8 @@ Route::get('/logout', ['as' => 'logout', 'uses' => function(){
 	return view('auth.login');
 }]);
 Route::get('/projects/intro', ['as' => 'projects.intro', 'uses' => function(){
-	return view('projects.intro');
+	$log = array();
+	return view('projects.intro')->with('log', $log);
 }]);
 
 Route::resource('projects', 'ProjectServiceController');

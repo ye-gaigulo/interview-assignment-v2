@@ -5,7 +5,6 @@ Projects API - Project Edit
 @endsection
 
 @section('content')
-
 	<div class="col-md-6">
 		@if(count($errors) > 0)
 			<div class="alert alert-danger">

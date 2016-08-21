@@ -45,7 +45,9 @@ class UserServiceController extends Controller
             $request->session()->put('header_2', 'Authorization: '.$authToken->token);
         }
 
-        return view('projects.intro');
+        $log = array ();
+
+        return view('projects.intro')->with('log', $log);
     }
 }
 
