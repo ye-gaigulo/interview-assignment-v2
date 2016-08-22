@@ -67,7 +67,8 @@ class ProjectServiceController extends Controller
         $this->validate($request,[
             'title' => 'required|min:3',
             'description' => 'required|min:12',
-            'start_date' => 'required|date'
+            'start_date' => 'required|date',
+            'end_date' => 'date'
         ]);
 
         $data = array(
@@ -143,7 +144,8 @@ class ProjectServiceController extends Controller
         $this->validate($request,[
             'title' => 'required|min:3',
             'description' => 'required|min:12',
-            'start_date' => 'required|date'
+            'start_date' => 'required|date',
+            'end_date' => 'date'
         ]);
 
         $data = array(
