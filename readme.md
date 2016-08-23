@@ -13,7 +13,7 @@ Project Management v2.0 is an end user web interface performing queries to an AP
 The application uses PHPs cURL function to perform requests to the web services and receives JSON responses which is then decoded and the data is presented in the required format. 
 
 	
-The application is designed in the Laravel 5 framework and uses [Custom PHP cURL library](https://github.com/ixudra/curl) for the Laravel 5 framework.
+The application is designed in the Laravel 5 framework and uses [Custom PHP cURL library](https://github.com/ixudra/curl) for the Laravel.
 
 ## Known Bugs
 
